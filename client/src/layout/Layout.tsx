@@ -72,7 +72,7 @@ function Layout() {
                         </span>
                       </Link>
                     </li>
-                  );
+                  );  
                 })}
               </ul>
 
