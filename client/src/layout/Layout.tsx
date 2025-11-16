@@ -5,14 +5,18 @@ import {
   Megaphone,
   Phone,
   LogOut,
+  ClockFading,
 } from "lucide-react";
 import { useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import { useUserStore } from "../store/userStore";
 
 function Layout() {
   const [isOpenSidebar, setSidebar] = useState<boolean>(true);
   const navigate = useNavigate();
 
+  const { isAdmin } = useUserStore();
+  console.log(isAdmin);
   const handleLogout = () => {
     // Your logout logic here
     console.log("Logging out...");
@@ -56,6 +60,7 @@ function Layout() {
               <ul className="flex flex-col text-white font-medium gap-1 p-4">
                 {navItems.map((item) => {
                   const IconComponent = item.icon;
+                  if (item.path === "/create-room" && !isAdmin) return;
                   return (
                     <li key={item.path}>
                       <Link
@@ -71,7 +76,7 @@ function Layout() {
                         </span>
                       </Link>
                     </li>
-                  );  
+                  );
                 })}
               </ul>
 
