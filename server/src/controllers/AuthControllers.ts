@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
+import bcrypt from "bcrypt"
 import { PrismaClient } from "../generated/prisma/client";
 import { TryCatch } from "../middlewares/error";
 import z from "zod";
+import { generayeJwtToken } from "../middlewares/generateToken";
 
 export const prisma = new PrismaClient();
 
@@ -16,8 +18,7 @@ const SignUpSchema = z.object({
     password: z.string().min(6, "Password must be at least 6 characters"),
     name: z.string(),
 });
-
-// ✔ SIGNIN
+// /api/user/signin
 export const Signin = TryCatch(async (req: Request, res: Response) => {
     const parsed = SigninSchema.safeParse(req.body);
 
@@ -36,17 +37,25 @@ export const Signin = TryCatch(async (req: Request, res: Response) => {
         return res.status(404).json({ message: "User not found" });
     }
 
-    if (user.password !== password) {
+    const isPasswordValid = await bcrypt.compare(password, user.password)
+
+    if (!isPasswordValid) {
         return res.status(401).json({ message: "Invalid credentials" });
     }
+    const token = generayeJwtToken(user.userId, res)
 
     return res.status(200).json({
         message: "Signin successful",
-        user,
+        user: {
+            id: user.userId,
+            name: user.name,
+            email: user.email
+        },  
     });
 });
 
-// ✔ SIGNUP
+// /api/user/signup
+
 export const Signup = TryCatch(async (req: Request, res: Response) => {
     const parsed = SignUpSchema.safeParse(req.body);
 
@@ -59,14 +68,18 @@ export const Signup = TryCatch(async (req: Request, res: Response) => {
 
     const { name, email, password } = parsed.data;
 
-    const exists = await prisma.user.findUnique({ where: { email } });
+    const exists = await prisma.user.findUnique({ where: { email }, });
 
     if (exists) {
         return res.status(400).json({ message: "User already exists" });
     }
 
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(password, salt)
+
+    console.log(salt)
     const dbUser = await prisma.user.create({
-        data: { name, email, password },
+        data: { name, email, password: hashedPassword },
     });
 
     return res.status(201).json({

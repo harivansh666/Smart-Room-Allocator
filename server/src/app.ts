@@ -1,13 +1,17 @@
 import express, { NextFunction, Request, Response } from "express"
-import userRoutes from "./routes/authRoutes"
+import dotenv from "dotenv"
 import cors from 'cors'
+import userRoutes from "./routes/authRoutes"
 import { errorMiddleware } from "./middlewares/error"
+
 const app = express()
+dotenv.config();
 
 app.use(express.json())
 app.use(
     cors({
-        origin: "http://localhost:5173"
+        origin: "http://localhost:5173",
+        methods: ["Get", "POST", "PUT", "PATCH"]
 
     }))
 
