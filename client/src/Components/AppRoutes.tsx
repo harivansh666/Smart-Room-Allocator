@@ -1,9 +1,8 @@
 import { Routes, Route } from "react-router-dom";
-import Home from "./Home";
 import Layout from "../layout/Layout";
-import CreateRoom from "./CreateRoom";
-import Announcement from "./Announcement";
-import Teacherscontact from "./Teacherscontact";
+import Home from "../pages/Home";
+import CreateRoom from "../pages/CreateRoom";
+import Announcement from "../pages/Announcement";
 
 function AppRoutes() {
   return (
@@ -12,7 +11,6 @@ function AppRoutes() {
         <Route index element={<Home />} />
         <Route path="create-room" element={<CreateRoom />} />
         <Route path="announcement" element={<Announcement />} />
-        <Route path="teachers-contact" element={<Teacherscontact />} />
       </Route>
     </Routes>
   );

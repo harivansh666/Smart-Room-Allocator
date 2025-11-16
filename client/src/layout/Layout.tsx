@@ -23,7 +23,6 @@ function Layout() {
     { path: "/", icon: Home, label: "Home" },
     { path: "/create-room", icon: PlusCircle, label: "Create Room" },
     { path: "/announcement", icon: Megaphone, label: "Announcement" },
-    { path: "/teachers-contact", icon: Phone, label: "Teachers Contact" },
   ];
 
   return (
