@@ -9,7 +9,7 @@ export const generayeJwtToken = (userId: number, res: Response) => {
     if (!process.env.JtwSecret) {
         throw new Error("JWT_SECRET is not defined");
     }
-    const token = jwt.sign({ auth: userId }, process.env.JWT_SECRET, { expiresIn: "7d", })
+    const token = jwt.sign({ auth: userId }, process.env.JWT_SECRET as string, { expiresIn: "7d", })
 
     res.cookie("auth", token, {
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds

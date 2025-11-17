@@ -1,6 +1,6 @@
 import { useState } from "react";
 import GenerateRoomStructure from "../Components/GenerateRoomStructure";
-
+import { useUserStore } from "../store/userStore";
 interface CreateRoomForm {
   exam: string;
   noOfStudents: number;
@@ -15,6 +15,8 @@ const CreateRoom = () => {
     roomCapacity: 0,
     allocatedTeacherId: undefined,
   });
+
+  const { createRoom } = useUserStore();
 
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -32,6 +34,7 @@ const CreateRoom = () => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
+    console.log("BASE_URL => ", import.meta.env.VITE_BASE_URL);
 
     if (!form.exam.trim() || form.noOfStudents <= 0 || form.roomCapacity <= 0) {
       setError("Please fill all required fields correctly.");
@@ -46,17 +49,7 @@ const CreateRoom = () => {
     setLoading(true);
 
     try {
-      // Replace with your API call
-      const response = await fetch("/api/rooms", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to create room");
-      }
-
+      createRoom(form);
       setSuccess("Room created successfully!");
       setForm({
         exam: "",

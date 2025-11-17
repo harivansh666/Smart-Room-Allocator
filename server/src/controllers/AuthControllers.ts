@@ -1,11 +1,10 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt"
-import { PrismaClient } from "../generated/prisma/client";
 import { TryCatch } from "../middlewares/error";
 import z from "zod";
 import { generayeJwtToken } from "../middlewares/generateToken";
+import prisma from "../config/prisma";
 
-export const prisma = new PrismaClient();
 
 
 const SigninSchema = z.object({
@@ -50,7 +49,7 @@ export const Signin = TryCatch(async (req: Request, res: Response) => {
             id: user.userId,
             name: user.name,
             email: user.email
-        },  
+        },
     });
 });
 
