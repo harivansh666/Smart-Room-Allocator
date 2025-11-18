@@ -9,14 +9,14 @@ interface CreateRoomForm {
 }
 
 const CreateRoom = () => {
+  const { createRoom } = useUserStore();
+
   const [form, setForm] = useState<CreateRoomForm>({
     exam: "",
     noOfStudents: 0,
     roomCapacity: 0,
     allocatedTeacherId: undefined,
   });
-
-  const { createRoom } = useUserStore();
 
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -34,7 +34,6 @@ const CreateRoom = () => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
-    console.log("BASE_URL => ", import.meta.env.VITE_BASE_URL);
 
     if (!form.exam.trim() || form.noOfStudents <= 0 || form.roomCapacity <= 0) {
       setError("Please fill all required fields correctly.");

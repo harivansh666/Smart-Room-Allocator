@@ -15,5 +15,8 @@ export const errorMiddleware = (err: ErrorHandler, req: Request, res: Response, 
 // /user
 export const TryCatch = (func: ControllerType) =>
     (req: Request, res: Response, next: NextFunction) => {
-        Promise.resolve(func(req, res, next)).catch(next);
+        Promise.resolve(func(req, res, next)).catch((err) => {
+            console.error("🔥 SERVER ERROR:", err)
+            next(err)
+        })
     }

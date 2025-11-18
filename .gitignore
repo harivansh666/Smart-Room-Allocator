@@ -1,5 +1,4 @@
 server/prisma.config.ts
-server/prisma.config.ts
 client/src/Components/CreateRoom.tsx
 server/dist/app.js
 client/src/Components/CreateRoom.tsx

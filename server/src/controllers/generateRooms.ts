@@ -10,11 +10,10 @@ const CreateRoomSchema = z.object({
     allocatedTeacherId: z.number().optional(),
 })
 
-export const createRoom = TryCatch(async (req: Request, res: Response) => {
+export const createRoom = TryCatch(async (req, res) => {
 
     const parsed = CreateRoomSchema.safeParse(req.body)
 
-    console.log(parsed.data)
 
     if (!parsed.success) {
         return res.status(400).json({
@@ -24,15 +23,25 @@ export const createRoom = TryCatch(async (req: Request, res: Response) => {
         })
     }
 
-    // const data = parsed.room.create({
-    //     data: {
-    //         exam: data.exam,
-    //         NoOfStudents: data.noOfStudents,
-    //         RoomCapacity: data.roomCapacity,
-    //         allocatedTeacherId: data.allocatedTeacherId ?? null,
-    //     }
-    // })
-    prisma.user.create
-    return res.status(200).json({ msg: "OK" });
+    const responseDb = await prisma.room.create({
+        data: {
+            exam: parsed.data.exam,
+            noOfStudents: parsed.data.noOfStudents,
+            roomCapacity: parsed.data.roomCapacity,
+            allocatedTeacherId: parsed.data.allocatedTeacherId ?? null,
+        }
+    })
+    console.log("responseDb", responseDb)
+    return res.status(200).json({ responseDb, msg: "OK" });
 
 })
+export const getRooms = TryCatch(
+
+    async (req, res) => {
+        const id = req.body
+        console.log(id)
+        const dbresult = await prisma.user.findUnique(id)
+        console.log(dbresult)
+
+    }
+)

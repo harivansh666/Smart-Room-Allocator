@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt"
 import { TryCatch } from "../middlewares/error";
-import z from "zod";
+import z, { success } from "zod";
 import { generayeJwtToken } from "../middlewares/generateToken";
 import prisma from "../config/prisma";
 
@@ -17,7 +17,9 @@ const SignUpSchema = z.object({
     password: z.string().min(6, "Password must be at least 6 characters"),
     name: z.string(),
 });
-// /api/user/signin
+
+
+// /api/signin
 export const Signin = TryCatch(async (req: Request, res: Response) => {
     const parsed = SigninSchema.safeParse(req.body);
 
@@ -41,9 +43,10 @@ export const Signin = TryCatch(async (req: Request, res: Response) => {
     if (!isPasswordValid) {
         return res.status(401).json({ message: "Invalid credentials" });
     }
-    const token = generayeJwtToken(user.userId, res)
+    await generayeJwtToken(user.userId, res)
 
     return res.status(200).json({
+        success: true,
         message: "Signin successful",
         user: {
             id: user.userId,
@@ -53,9 +56,10 @@ export const Signin = TryCatch(async (req: Request, res: Response) => {
     });
 });
 
-// /api/user/signup
+// /api/signup
 
 export const Signup = TryCatch(async (req: Request, res: Response) => {
+
     const parsed = SignUpSchema.safeParse(req.body);
 
     if (!parsed.success) {
@@ -86,4 +90,19 @@ export const Signup = TryCatch(async (req: Request, res: Response) => {
         user: dbUser,
     });
 });
+
+export const checkAuth = TryCatch(async (req, res) => {
+    try {
+        const token = req.cookies.auth;
+        if (!req.user) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+        return res.status(200).json(req.user);
+    } catch (error) {
+        console.log("error is checkauth controller", error);
+        return res.status(400).json(error);
+    }
+});
+
+
 

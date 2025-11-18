@@ -6,6 +6,7 @@ import {
   Phone,
   LogOut,
   ClockFading,
+  File,
 } from "lucide-react";
 import { useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
@@ -26,6 +27,7 @@ function Layout() {
   const navItems = [
     { path: "/", icon: Home, label: "Home" },
     { path: "/create-room", icon: PlusCircle, label: "Create Room" },
+    { path: "/exams", icon: File, label: "Exams" },
     { path: "/announcement", icon: Megaphone, label: "Announcement" },
   ];
 
