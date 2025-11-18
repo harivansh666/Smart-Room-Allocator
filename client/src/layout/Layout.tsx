@@ -18,8 +18,8 @@ function Layout() {
 
   const { isAdmin } = useUserStore();
   console.log(isAdmin);
+
   const handleLogout = () => {
-    // Your logout logic here
     console.log("Logging out...");
     navigate("/login");
   };
@@ -41,7 +41,10 @@ function Layout() {
             onClick={() => setSidebar(!isOpenSidebar)}
           />
           <span className="ml-3 font-bold text-lg md:text-xl">
-            Class Allocator
+            Class Allocator{" "}
+            <span className="text-sm font-mono">
+              {isAdmin ? "Admin" : "Teacher"}
+            </span>
           </span>
         </div>
         <button

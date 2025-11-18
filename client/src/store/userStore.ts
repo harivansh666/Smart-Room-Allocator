@@ -17,7 +17,7 @@ type UserStore = {
 
 export const useUserStore = create<UserStore>((set) => ({
     authUser: null,
-    isAdmin: true,
+    isAdmin: false,
     isLoding: false,
 
 
@@ -25,6 +25,7 @@ export const useUserStore = create<UserStore>((set) => ({
         try {
             const response = await axiosInstance.get('auth/check', { withCredentials: true })
             set({ authUser: response.data })
+            set({ isAdmin: response.data.isAdmin })
         } catch (error) {
             console.error("Error checking authentication:", error);
             set({ authUser: null });
@@ -45,6 +46,20 @@ export const useUserStore = create<UserStore>((set) => ({
             set({ isLoding: false });
         }
     },
+    Signup: async (data) => {
+        try {
+            set({ isLoding: true });
+
+            const response = await axiosInstance.post("/signup", data);
+            set({ authUser: response.data, });
+            return { success: true }
+        } catch (error) {
+            console.log(error);
+            return { success: false }
+        } finally {
+            set({ isLoding: false });
+        }
+    },
 
     createRoom: async (data) => {
         try {
@@ -56,8 +71,8 @@ export const useUserStore = create<UserStore>((set) => ({
 
     getRooms: async (userId) => {
         try {
-            const response = await axiosInstance.get(`/rooms/getrooms?userId=${userId}`);
-            return response.data;
+            const response = await axiosInstance.get("/rooms/getrooms", { params: { userId } });
+            console.log(response.data)
         } catch (error) {
             console.log(error);
         }

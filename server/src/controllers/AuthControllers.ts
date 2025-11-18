@@ -93,7 +93,6 @@ export const Signup = TryCatch(async (req: Request, res: Response) => {
 
 export const checkAuth = TryCatch(async (req, res) => {
     try {
-        const token = req.cookies.auth;
         if (!req.user) {
             return res.status(401).json({ message: "Unauthorized" });
         }

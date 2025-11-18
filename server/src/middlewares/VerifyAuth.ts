@@ -17,9 +17,7 @@ interface AuthPayload extends JwtPayload {
 
 export const protect = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        console.log(req)
         const token = req.cookies.auth;
-        console.log(token)
 
         if (!token) {
             return res.status(401).json({ message: "No authentication token provided" });
@@ -33,13 +31,14 @@ export const protect = async (req: Request, res: Response, next: NextFunction) =
 
         try {
             decoded = jwt.verify(token, process.env.JWT_SECRET) as AuthPayload;
-            console.log("Decoded JWT:", decoded); // <-- IMPORTANT
         } catch {
             return res.status(401).json({ message: "Invalid or expired token" });
         }
 
         const user = await prisma.user.findUnique({
-            where: { userId: decoded.auth },
+            where: { userId: decoded.auth }, include: {
+                roomsAllocated: true,
+            }
         });
 
         if (!user) {

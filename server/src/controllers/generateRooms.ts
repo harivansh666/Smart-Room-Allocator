@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { TryCatch } from "../middlewares/error";
-import z from 'zod'
+import z, { success } from 'zod'
 import prisma from "../config/prisma";
 
 const CreateRoomSchema = z.object({
@@ -28,8 +28,13 @@ export const createRoom = TryCatch(async (req, res) => {
             exam: parsed.data.exam,
             noOfStudents: parsed.data.noOfStudents,
             roomCapacity: parsed.data.roomCapacity,
-            allocatedTeacherId: parsed.data.allocatedTeacherId ?? null,
+            allocatedTeacher: parsed.data.allocatedTeacherId ? {
+                connect: { userId: parsed.data.allocatedTeacherId }
+            } : undefined,
+        }, include: {
+            allocatedTeacher: true,
         }
+
     })
     console.log("responseDb", responseDb)
     return res.status(200).json({ responseDb, msg: "OK" });
@@ -38,10 +43,17 @@ export const createRoom = TryCatch(async (req, res) => {
 export const getRooms = TryCatch(
 
     async (req, res) => {
-        const id = req.body
+        const id = req.query.userId
+        const userId = Number(id);
         console.log(id)
-        const dbresult = await prisma.user.findUnique(id)
-        console.log(dbresult)
-
+        const dbresult = await prisma.user.findUnique({
+            where: { userId }, include: {
+                roomsAllocated: true,
+            }
+        });
+        return res.status(200).json({
+            success: true,
+            dbresult
+        });
     }
 )

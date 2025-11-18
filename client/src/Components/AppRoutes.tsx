@@ -6,15 +6,20 @@ import Layout from "../layout/Layout";
 import Announcement from "../pages/Announcement";
 import Exams from "../pages/Exams";
 import CreateRoom from "../pages/CreateRoom";
+import Signup from "../pages/Signup";
 
 function AppRoutes() {
   const { isAdmin, authUser } = useUserStore();
-
+console.log(isAdmin);
   return (
     <Routes>
       <Route
         path="/signin"
         element={!authUser ? <Login /> : <Navigate to="/" />}
+      />
+      <Route
+        path="/signup"
+        element={!authUser ? <Signup /> : <Navigate to="/" />}
       />
 
       <Route path="/" element={<Layout />}>
