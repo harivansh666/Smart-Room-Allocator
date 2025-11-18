@@ -20,7 +20,14 @@ export const useUserStore = create<UserStore>((set) => ({
     isAdmin: false,
     isLoding: false,
 
-
+    warmUp: async () => {
+        try {
+            const response = await axiosInstance.get('/warmup')
+            console.log(await response.data)
+        } catch (error) {
+            console.log(error)
+        }
+    },
     checkAuth: async () => {
         try {
             const response = await axiosInstance.get('auth/check', { withCredentials: true })
@@ -35,7 +42,6 @@ export const useUserStore = create<UserStore>((set) => ({
     Login: async (data) => {
         try {
             set({ isLoding: true });
-
             const response = await axiosInstance.post("/signin", data);
             set({ authUser: response.data, });
             return { success: true }
@@ -58,6 +64,23 @@ export const useUserStore = create<UserStore>((set) => ({
             return { success: false }
         } finally {
             set({ isLoding: false });
+        }
+    },
+
+    logout: async () => {
+        try {
+            set({ isLoding: true })
+            const response = await axiosInstance.post('/logout', {}, { withCredentials: true })
+            if (response.data.success === "success") {
+                window.location.href = '/login';
+            }
+        } catch (error) {
+            set({ isLoding: false })
+
+            console.log(error)
+        } finally {
+            set({ isLoding: false })
+
         }
     },
 

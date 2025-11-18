@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, memo } from "react";
 import { useUserStore } from "../store/userStore";
 
-function Home() {
+const Home = memo(function Home() {
   const { checkAuth, authUser } = useUserStore();
 
   useEffect(() => {
@@ -122,6 +122,6 @@ function Home() {
       )}
     </div>
   );
-}
+});
 
 export default Home;

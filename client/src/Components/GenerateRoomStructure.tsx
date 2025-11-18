@@ -2,13 +2,20 @@ import React from "react";
 
 interface GenerateRoomStructureProps {
   students: number; // ya array of students, jaise form se pass ho raha hai
+  roomCapacity?: number;
 }
 
-function GenerateRoomStructure({ students }: GenerateRoomStructureProps) {
+function GenerateRoomStructure({
+  students,
+  roomCapacity,
+}: GenerateRoomStructureProps) {
   const arr = Array.from({ length: students }); // 20 seats
+  const totalSeats = roomCapacity || students;
+  const available = roomCapacity - students;
+   const occupiedSeats = students;
 
   return (
-    <div className="w-full h-screen rounded-lg mt-4">
+    <div className="w-full h-screen rounded-lg mt-2">
       <h1 className="text-2xl font-bold mb-4 flex justify-center p-4">
         Sitting Arrangement in Room
       </h1>
@@ -31,16 +38,16 @@ function GenerateRoomStructure({ students }: GenerateRoomStructureProps) {
       </div>
       <div className="mt-6 grid grid-cols-3 gap-4 text-center">
         <div className="bg-blue-100 rounded-lg p-3">
-          <div className="text-blue-800 font-semibold">Total Seats</div>
-          <div className="text-xl font-bold text-blue-900">50</div>
+          <div className="text-blue-800 font-semibold">Total Seats In Room</div>
+          <div className="text-xl font-bold text-blue-900">{totalSeats}</div>
         </div>
         <div className="bg-green-100 rounded-lg p-3">
           <div className="text-green-800 font-semibold">Available</div>
-          <div className="text-xl font-bold text-green-900">50</div>
+          <div className="text-xl font-bold text-green-900">{available}</div>
         </div>
         <div className="bg-red-100 rounded-lg p-3">
           <div className="text-red-800 font-semibold">Occupied</div>
-          <div className="text-xl font-bold text-red-900">0</div>
+          <div className="text-xl font-bold text-red-900">{occupiedSeats}</div>
         </div>
       </div>
     </div>

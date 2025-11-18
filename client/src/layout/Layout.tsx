@@ -16,12 +16,11 @@ function Layout() {
   const [isOpenSidebar, setSidebar] = useState<boolean>(true);
   const navigate = useNavigate();
 
-  const { isAdmin } = useUserStore();
-  console.log(isAdmin);
+  const { isAdmin, logout, isLoding } = useUserStore();
 
   const handleLogout = () => {
-    console.log("Logging out...");
-    navigate("/login");
+    logout();
+    navigate("/signin");
   };
 
   const navItems = [

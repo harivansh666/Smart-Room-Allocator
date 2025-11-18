@@ -10,7 +10,6 @@ import Signup from "../pages/Signup";
 
 function AppRoutes() {
   const { isAdmin, authUser } = useUserStore();
-console.log(isAdmin);
   return (
     <Routes>
       <Route

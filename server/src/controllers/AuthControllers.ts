@@ -103,5 +103,28 @@ export const checkAuth = TryCatch(async (req, res) => {
     }
 });
 
+export const Logout = TryCatch(async (req, res) => {
+    res.clearCookie('auth')
+    res.status(200).json({
+        success: true,
+        message: 'Logged out successfully'
+    });
+}
+)
 
 
+export const warmup = async (req: Request, res: Response) => {
+    try {
+        res.status(200).json({
+            sucess: true,
+            message: "Server Start"
+        })
+    } catch (error) {
+        res.status(500).json({
+            sucess: false,
+            message: "Server not start",
+            error: error
+        })
+    }
+
+}

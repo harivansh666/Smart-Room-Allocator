@@ -4,10 +4,11 @@ import { useUserStore } from "./store/userStore";
 import { useNavigate } from "react-router-dom";
 
 function App() {
-  const { checkAuth, authUser } = useUserStore();
+  const { checkAuth, authUser, warmUp } = useUserStore();
   const navigator = useNavigate();
   useEffect(() => {
     checkAuth();
+    warmUp();
     if (authUser === null) navigator("/signin");
   }, [checkAuth]);
   return <RoutesTs />;
