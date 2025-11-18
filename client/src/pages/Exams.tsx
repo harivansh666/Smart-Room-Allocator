@@ -5,20 +5,36 @@ import GenerateRoomStructure from "../Components/GenerateRoomStructure";
 function Exams() {
   const date = new Date();
   const { checkAuth, authUser } = useUserStore();
-  console.log("authUser:-", authUser.roomsAllocated);
-  const TodaysDate = `${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`;
+  const TodaysDate = `${date.getDate()}-${
+    date.getMonth() + 1
+  }-${date.getFullYear()}`;
 
   useEffect(() => {
     checkAuth();
   }, []);
 
+  if (!authUser || !authUser.roomsAllocated.length) {
+    return <p className="p-4">No exams allocated yet.</p>;
+  }
+
   return (
-    <div>
-      <h1 className="text-2xl font-medium">Today Exams:{TodaysDate}</h1>
-      <h2 className="pt-2">Exam Date: 12/12/2026</h2>
-      <GenerateRoomStructure
-        students={authUser.roomsAllocated[0].noOfStudents}
-      />
+    <div className="p-4">
+      <h1 className="text-2xl font-medium">Today Exams: {TodaysDate}</h1>
+
+      {authUser.roomsAllocated.map((room) => (
+        <div key={room.roomId} className="mt-4  p-4 rounded-lg shadow">
+          <h2 className="text-lg">Exam: {room.exam}</h2>
+          <p>
+            Number of Students:{" "}
+            <span className="text-rose-500 text-lg font-medium">
+              {room.noOfStudents}
+            </span>
+          </p>
+
+          {/* Pass to your existing component */}
+          <GenerateRoomStructure students={room.noOfStudents} />
+        </div>
+      ))}
     </div>
   );
 }
