@@ -118,9 +118,6 @@ function Home() {
             You don't have any exams scheduled at the moment. Check back later
             or contact your administrator.
           </p>
-          <button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-2 px-6 rounded-lg font-semibold transition duration-200 transform hover:scale-105">
-            Check for Updates
-          </button>
         </div>
       )}
     </div>
