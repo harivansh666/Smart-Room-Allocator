@@ -18,7 +18,6 @@ app.use(cors({
     credentials: true
 }))
 
-
 app.use('/api', userRoutes)
 app.use('/api/rooms', roomRouter)
 
