@@ -1,10 +1,10 @@
-import express, { NextFunction, Request, Response } from "express"
+import express, { Request, Response } from "express"
 import dotenv from "dotenv"
 import cors from 'cors'
 import userRoutes from "./routes/authRoutes"
 import { errorMiddleware } from "./middlewares/error"
 import roomRouter from "./routes/createRoom.Route"
-import cookieParser from 'cookie-parser'
+import cookieParser from "cookie-parser"
 
 const app = express()
 dotenv.config();
@@ -12,7 +12,11 @@ dotenv.config();
 app.use(express.json())
 app.use(cookieParser())
 
-app.use(cors())
+app.use(cors({
+    origin: "https://smart-room-allocator.vercel.app",
+    methods: ["GET,POST,PUT,DELETE,PATCH"],
+    credentials: true
+}))
 
 
 app.use('/api', userRoutes)
