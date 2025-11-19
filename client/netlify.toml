@@ -35,3 +35,6 @@ Or create a `_headers` file in your `public` folder (it will be copied to `dist`
 
 /assets/*.js
   Content-Type: application/javascript; charset=utf-8
+
+
+  
