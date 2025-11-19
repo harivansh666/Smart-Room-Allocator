@@ -3,3 +3,5 @@ client/src/Components/CreateRoom.tsx
 server/dist/app.js
 client/src/Components/CreateRoom.tsx
 client/src/store/userStore.js
+client/src/store/userStore.js
+client/src/pages/About.tsx

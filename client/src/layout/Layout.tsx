@@ -3,9 +3,7 @@ import {
   PanelRight,
   PlusCircle,
   Megaphone,
-  Phone,
   LogOut,
-  ClockFading,
   File,
 } from "lucide-react";
 import { useState } from "react";
@@ -16,7 +14,7 @@ function Layout() {
   const [isOpenSidebar, setSidebar] = useState<boolean>(true);
   const navigate = useNavigate();
 
-  const { isAdmin, logout, isLoding } = useUserStore();
+  const { isAdmin, logout } = useUserStore();
 
   const handleLogout = () => {
     logout();

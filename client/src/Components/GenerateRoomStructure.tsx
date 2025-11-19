@@ -1,5 +1,3 @@
-import React from "react";
-
 interface GenerateRoomStructureProps {
   students: number; // ya array of students, jaise form se pass ho raha hai
   roomCapacity?: number;
@@ -11,8 +9,8 @@ function GenerateRoomStructure({
 }: GenerateRoomStructureProps) {
   const arr = Array.from({ length: students }); // 20 seats
   const totalSeats = roomCapacity || students;
-  const available = roomCapacity - students;
-   const occupiedSeats = students;
+  const available = roomCapacity ?? students;
+  const occupiedSeats = students;
 
   return (
     <div className="w-full h-screen rounded-lg mt-2">
