@@ -5,11 +5,17 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+<<<<<<< HEAD
     "build": "prisma generate && tsc",
+=======
+    "build": "tsc && prisma generate",
+>>>>>>> 9560fc6d5fc71e3f98dfbaaa19c2ab4d329408c4
     "postinstall": "prisma generate",
     "start": "node dist/app.js",
     "dev": "nodemon src/app.ts"
   },
+
+
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -36,3 +42,6 @@
     "zod": "^4.1.12"
   }
 }
+
+
+
