@@ -11,6 +11,15 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: 'dist', // Netlify will use this folder
+    outDir: 'dist',
+    minify: 'esbuild', // safer minifier for React + TS
+    rollupOptions: {
+      output: {
+        manualChunks: undefined, // avoid splitting small chunks that can break imports
+      },
+    },
+  },
+  optimizeDeps: {
+    include: ["react", "react-dom", "axios"], // pre-bundle critical packages
   },
 })
