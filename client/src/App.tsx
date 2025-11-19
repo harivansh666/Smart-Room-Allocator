@@ -5,13 +5,21 @@ import { useNavigate } from "react-router-dom";
 
 function App() {
   const { checkAuth, authUser, warmUp } = useUserStore();
-  const navigator = useNavigate();
+  const navigate = useNavigate();
+
   useEffect(() => {
+    // Call auth functions
     checkAuth();
     warmUp();
-    
-    if (authUser === null) navigator("/signin");
-  }, [checkAuth]);
+  }, [checkAuth, warmUp]);
+
+  useEffect(() => {
+    // Redirect only after authUser updates
+    if (authUser === null) {
+      navigate("/signin");
+    }
+  }, [authUser, navigate]);
+
   return <RoutesTs />;
 }
 
