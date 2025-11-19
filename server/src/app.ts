@@ -13,7 +13,7 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.use(cors({
-    origin: "https://shiny-melomakarona-5f5c6d.netlify.app",
+    origin: process.env.CLIENT_API,
     methods: ["GET,POST,PUT,DELETE,PATCH"],
     credentials: true
 }))
