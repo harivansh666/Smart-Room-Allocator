@@ -12,13 +12,7 @@ dotenv.config();
 app.use(express.json())
 app.use(cookieParser())
 
-app.use(
-    cors({
-        origin: "http://localhost:5173",
-        methods: ["Get", "POST", "PUT", "PATCH"],
-        credentials: true
-
-    }))
+app.use(cors())
 
 
 app.use('/api', userRoutes)
