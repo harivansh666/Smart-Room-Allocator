@@ -1,14 +1,37 @@
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+
 [[headers]]
   for = "/*.js"
   [headers.values]
-    Content-Type = "application/javascript"
+    Content-Type = "application/javascript; charset=utf-8"
 
 [[headers]]
   for = "/*.mjs"
   [headers.values]
-    Content-Type = "application/javascript"
+    Content-Type = "application/javascript; charset=utf-8"
 
 [[headers]]
-  for = "/*.jsx"
+  for = "/assets/*.js"
   [headers.values]
-    Content-Type = "application/javascript"
+    Content-Type = "application/javascript; charset=utf-8"
+```
+
+## Alternative: Add `_headers` file
+
+Or create a `_headers` file in your `public` folder (it will be copied to `dist` during build):
+```
+/*.js
+  Content-Type: application/javascript; charset=utf-8
+
+/*.mjs
+  Content-Type: application/javascript; charset=utf-8
+
+/assets/*.js
+  Content-Type: application/javascript; charset=utf-8
