@@ -9,6 +9,7 @@ function App() {
   useEffect(() => {
     checkAuth();
     warmUp();
+    
     if (authUser === null) navigator("/signin");
   }, [checkAuth]);
   return <RoutesTs />;
