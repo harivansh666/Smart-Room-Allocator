@@ -22,7 +22,7 @@ app.use(cors({
 app.use('/api', userRoutes)
 app.use('/api/rooms', roomRouter)
 
-app.get("/check", (req: Request, res: Response) => {
+app.get("/api/check", (req: Request, res: Response) => {
     res.json({ success: true })
 })
 
