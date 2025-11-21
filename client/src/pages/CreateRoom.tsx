@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GenerateRoomStructure from "../Components/GenerateRoomStructure";
 import { useUserStore } from "../store/userStore";
+
 interface CreateRoomForm {
   exam: string;
   noOfStudents: number;
@@ -9,7 +10,7 @@ interface CreateRoomForm {
 }
 
 const CreateRoom = () => {
-  const { createRoom } = useUserStore();
+  const { createRoom, getTeachers, dbTeachers } = useUserStore();
 
   const [form, setForm] = useState<CreateRoomForm>({
     exam: "",
@@ -21,6 +22,11 @@ const CreateRoom = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    getTeachers();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -28,6 +34,14 @@ const CreateRoom = () => {
       ...prev,
       [name]: name === "exam" ? value : value === "" ? 0 : Number(value),
     }));
+  };
+
+  const handleTeacherSelect = (teacherId: number) => {
+    setForm((prev) => ({
+      ...prev,
+      allocatedTeacherId: teacherId,
+    }));
+    setIsDropdownOpen(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -63,9 +77,13 @@ const CreateRoom = () => {
     }
   };
 
+  const selectedTeacher = dbTeachers.find(
+    (teacher) => teacher.userId === form.allocatedTeacherId
+  );
+
   return (
     <div className="min-h-screen bg-gray-50 py-2">
-      <div className="max-w-4xl  px-2 sm:px-6 lg:px-8">
+      <div className="max-w-4xl px-2 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-4">
           <h1 className="text-3xl font-bold text-gray-900">Create Room</h1>
@@ -163,23 +181,97 @@ const CreateRoom = () => {
                   />
                 </div>
 
-                {/* Teacher ID */}
+                {/* Teacher Selection Dropdown */}
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Allocated Teacher ID{" "}
+                    Allocated Teacher{" "}
                     <span className="text-gray-500 font-normal">
                       (Optional)
                     </span>
                   </label>
-                  <input
-                    type="number"
-                    name="allocatedTeacherId"
-                    value={form.allocatedTeacherId ?? ""}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                    placeholder="Enter teacher ID"
-                    min={1}
-                  />
+
+                  <div className="relative">
+                    {/* Dropdown Trigger */}
+                    <button
+                      type="button"
+                      onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-left flex items-center justify-between bg-white hover:bg-gray-50"
+                    >
+                      <span
+                        className={
+                          selectedTeacher ? "text-gray-900" : "text-gray-500"
+                        }
+                      >
+                        {selectedTeacher
+                          ? `${selectedTeacher.name} (ID: ${selectedTeacher.userId})`
+                          : "Select a teacher"}
+                      </span>
+                      <svg
+                        className={`w-5 h-5 text-gray-400 transition-transform ${
+                          isDropdownOpen ? "rotate-180" : ""
+                        }`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    </button>
+
+                    {/* Dropdown Menu */}
+                    {isDropdownOpen && (
+                      <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-auto">
+                        <div className="p-2">
+                          {/* Teacher List */}
+                          <div className="space-y-1">
+                            {dbTeachers.map((teacher) => (
+                              <button
+                                key={teacher.userId}
+                                type="button"
+                                onClick={() =>
+                                  handleTeacherSelect(teacher.userId)
+                                }
+                                className={`w-full text-left px-3 py-2 rounded-md transition-colors ${
+                                  form.allocatedTeacherId === teacher.userId
+                                    ? "bg-blue-50 text-blue-700 border border-blue-200"
+                                    : "hover:bg-gray-100 text-gray-700"
+                                }`}
+                              >
+                                <div className="font-medium">
+                                  {teacher.name}
+                                </div>
+                                <div className="text-sm text-gray-500">
+                                  ID: {teacher.userId}
+                                </div>
+                              </button>
+                            ))}
+
+                            {dbTeachers.length === 0 && (
+                              <div className="px-3 py-2 text-sm text-gray-500 text-center">
+                                No teachers available
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Clear Selection */}
+                          {selectedTeacher && (
+                            <button
+                              type="button"
+                              onClick={() => handleTeacherSelect(undefined!)}
+                              className="w-full mt-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md border border-red-200 transition-colors"
+                            >
+                              Clear Selection
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -199,7 +291,10 @@ const CreateRoom = () => {
           </div>
         </div>
       </div>
-      <GenerateRoomStructure students={form.noOfStudents} />
+      <GenerateRoomStructure
+        students={form.noOfStudents}
+        teachers={form.allocatedTeacherId}
+      />
     </div>
   );
 };

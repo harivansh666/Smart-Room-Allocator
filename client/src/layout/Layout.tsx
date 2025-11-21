@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Home,
   PanelRight,
@@ -6,11 +7,10 @@ import {
   LogOut,
   File,
 } from "lucide-react";
-import { useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useUserStore } from "../store/userStore";
 
-function Layout() {
+const Layout = React.memo(function Layout() {
   const [isOpenSidebar, setSidebar] = useState<boolean>(true);
   const navigate = useNavigate();
 
@@ -23,7 +23,7 @@ function Layout() {
 
   const navItems = [
     { path: "/", icon: Home, label: "Home" },
-    { path: "/create-room", icon: PlusCircle, label: "Create Room" },
+    { path: "/createroom", icon: PlusCircle, label: "Create Room" },
     { path: "/exams", icon: File, label: "Exams" },
     { path: "/announcement", icon: Megaphone, label: "Announcement" },
   ];
@@ -109,6 +109,6 @@ function Layout() {
       </div>
     </div>
   );
-}
+});
 
 export default Layout;

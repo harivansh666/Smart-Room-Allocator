@@ -1,26 +1,22 @@
 import { useEffect } from "react";
 import RoutesTs from "./Components/AppRoutes";
 import { useUserStore } from "./store/userStore";
-import { useNavigate } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 function App() {
-  const { checkAuth, authUser, warmUp } = useUserStore();
-  const navigate = useNavigate();
+  const { checkAuth, warmUp } = useUserStore();
 
   useEffect(() => {
-    // Call auth functions
     checkAuth();
     warmUp();
   }, [checkAuth, warmUp]);
 
-  useEffect(() => {
-    // Redirect only after authUser updates
-    if (authUser === null) {
-      navigate("/signin");
-    }
-  }, [authUser, navigate]);
-
-  return <RoutesTs />;
+  return (
+    <>
+      <RoutesTs />
+      <Toaster />
+    </>
+  );
 }
 
 export default App;

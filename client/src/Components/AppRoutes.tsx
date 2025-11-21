@@ -39,7 +39,7 @@ function AppRoutes() {
 
         {isAdmin && (
           <Route
-            path="create-room"
+            path="createroom"
             element={authUser ? <CreateRoom /> : <Navigate to="/signin" />}
           />
         )}
