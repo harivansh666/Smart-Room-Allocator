@@ -28,7 +28,7 @@ type UserStore = {
     Signup: (data: any) => Promise<{ success: boolean }>;
     logout: () => Promise<void>;
 
-    getTeachers: (data: object) => Promise<void>;
+    getTeachers: () => Promise<void>;
     createRoom: (data: object) => Promise<void>;
     getRooms: (userId: string) => Promise<any>;
 };

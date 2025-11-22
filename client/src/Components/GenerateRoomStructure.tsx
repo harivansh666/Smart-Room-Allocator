@@ -3,6 +3,7 @@ import React from "react";
 interface GenerateRoomStructureProps {
   students: number; // ya array of students, jaise form se pass ho raha hai
   roomCapacity?: number;
+  teachers?: number;
 }
 
 const GenerateRoomStructure = React.memo(function GenerateRoomStructure({
