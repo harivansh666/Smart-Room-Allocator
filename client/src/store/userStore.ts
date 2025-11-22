@@ -50,7 +50,7 @@ export const useUserStore = create<UserStore>((set) => ({
 
     checkAuth: async () => {
         try {
-            const response = await axiosInstance.get("auth/check", {
+            const response = await axiosInstance.get("/auth/check", {
                 withCredentials: true,
             });
 
