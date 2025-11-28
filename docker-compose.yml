@@ -1,0 +1,53 @@
+version: "3.9"
+services:
+  client:
+    build: ./client
+    container_name: smart-room-client
+    ports:
+      - "3001:3001"
+    networks:
+      - smart-room-net
+
+  server:
+    build: ./server
+    container_name: smart-room-server
+    ports:
+      - "3000:3000"
+    networks:
+      - smart-room-net
+
+networks:
+  smart-room-net:
+    driver: bridge
+# =====================================================================================
+
+# # Compose file version (3.9 is latest stable for most Docker setups)
+# # It defines the format and features available in this Compose file
+# version: "3.9"
+
+# services:  # List of all the services (containers) your app will run
+#   client:  # First service: the frontend client (React/Vite)
+#     build: ./client  # Tells Docker Compose to build this image using the Dockerfile in ./client
+#     container_name: smart-room-client  # Optional: a friendly name for the container
+#     ports:
+#       - "3001:3001"  # Maps port 3001 on host → port 3001 in container
+#                      # So you can access the frontend at http://localhost:3001
+#     networks:
+#       - smart-room-net  # Connects this container to the custom network 'smart-room-net'
+#                         # Enables it to communicate easily with other containers in the same network
+
+#   server:  # Second service: the backend Node.js/Express server
+#     build: ./server  # Build image using Dockerfile inside ./server
+#     container_name: smart-room-server  # Friendly name for backend container
+#     ports:
+#       - "3000:3000"  # Maps port 3000 on host → 3000 in container
+#                      # So you can access backend at http://localhost:3000
+#     networks:
+#       - smart-room-net  # Same network as client
+#                         # This allows frontend to reach backend using container name: smart-room-server
+
+# # Define custom networks
+# networks:
+#   smart-room-net:
+#     driver: bridge  # Bridge network connects multiple containers together
+#                     # Isolated from host network but allows container-to-container communication
