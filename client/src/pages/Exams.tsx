@@ -6,6 +6,7 @@ import GenerateRoomStructure from "../Components/GenerateRoomStructure";
 interface Room {
   roomId: string;
   exam: string;
+  examDate: string;
   noOfStudents: number;
   roomCapacity: number;
 }
@@ -15,15 +16,10 @@ interface AuthUser {
 }
 
 function Exams() {
-  const date = new Date();
   const { checkAuth, authUser } = useUserStore() as {
     checkAuth: () => void;
     authUser: AuthUser | null;
   };
-
-  const TodaysDate = `${date.getDate()}-${
-    date.getMonth() + 1
-  }-${date.getFullYear()}`;
 
   useEffect(() => {
     checkAuth();
@@ -35,23 +31,20 @@ function Exams() {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-medium">Today Exams: {TodaysDate}</h1>
-
       {authUser.roomsAllocated.map((room) => (
         <div
           key={room.roomId}
           className="mt-4 p-4 rounded-lg shadow overflow-scroll"
         >
-          <h2 className="text-lg">
-            Exam: {room.exam.charAt(0).toUpperCase() + room.exam.slice(1)}
-          </h2>
+          <h1 className="text-2xl font-medium">Today Exams: {room.examDate}</h1>
+          <h2 className="text-lg"></h2>
+          Exam: {room.exam.charAt(0).toUpperCase() + room.exam.slice(1)}
           <p>
             Number of Students:{" "}
             <span className="text-rose-500 text-lg font-medium">
               {room.noOfStudents}
             </span>
           </p>
-
           <GenerateRoomStructure
             students={room.noOfStudents}
             roomCapacity={room.roomCapacity}

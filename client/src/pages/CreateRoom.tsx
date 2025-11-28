@@ -5,6 +5,7 @@ import { useUserStore } from "../store/userStore";
 interface CreateRoomForm {
   exam: string;
   noOfStudents: number;
+  examDate: string;
   roomCapacity: number;
   allocatedTeacherId?: number;
 }
@@ -16,6 +17,7 @@ const CreateRoom = () => {
     exam: "",
     noOfStudents: 0,
     roomCapacity: 0,
+    examDate: "",
     allocatedTeacherId: undefined,
   });
 
@@ -32,7 +34,12 @@ const CreateRoom = () => {
     const { name, value } = e.target;
     setForm((prev) => ({
       ...prev,
-      [name]: name === "exam" ? value : value === "" ? 0 : Number(value),
+      [name]:
+        name === "exam" || name === "examDate"
+          ? value
+          : value === ""
+          ? 0
+          : Number(value),
     }));
   };
 
@@ -48,14 +55,29 @@ const CreateRoom = () => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
-
-    if (!form.exam.trim() || form.noOfStudents <= 0 || form.roomCapacity <= 0) {
+    console.log(form);
+    if (
+      !form.exam.trim() ||
+      form.noOfStudents <= 0 ||
+      form.roomCapacity <= 0 ||
+      !form.examDate
+    ) {
       setError("Please fill all required fields correctly.");
       return;
     }
 
     if (form.noOfStudents > form.roomCapacity) {
       setError("Number of students cannot exceed room capacity.");
+      return;
+    }
+
+    // Validate that exam date is not in the past
+    const selectedDate = new Date(form.examDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set to beginning of day for accurate comparison
+
+    if (selectedDate < today) {
+      setError("Exam date cannot be in the past.");
       return;
     }
 
@@ -68,6 +90,7 @@ const CreateRoom = () => {
         exam: "",
         noOfStudents: 0,
         roomCapacity: 0,
+        examDate: "",
         allocatedTeacherId: undefined,
       });
     } catch (err: any) {
@@ -80,6 +103,9 @@ const CreateRoom = () => {
   const selectedTeacher = dbTeachers.find(
     (teacher) => teacher.userId === form.allocatedTeacherId
   );
+
+  // Get today's date in YYYY-MM-DD format for the min attribute
+  const today = new Date().toISOString().split("T")[0];
 
   return (
     <div className="min-h-screen bg-gray-50 py-2">
@@ -145,6 +171,22 @@ const CreateRoom = () => {
                     onChange={handleChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                     placeholder="Enter exam name"
+                    required
+                  />
+                </div>
+
+                {/* Exam Date */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Exam Date <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    name="examDate"
+                    value={form.examDate}
+                    onChange={handleChange}
+                    min={today}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                     required
                   />
                 </div>

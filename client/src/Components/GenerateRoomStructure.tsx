@@ -23,7 +23,7 @@ const GenerateRoomStructure = React.memo(function GenerateRoomStructure({
       <div className="w-90  flex flex-col items-center  bg-gray-200 rounded-lg p-8">
         <div>
           <div className=" flex justify-center  items-center h-9 p-2 bg-green-600 text-white font-mono rounded-md mb-2">
-            Teacher Id: {!teachers ? "Assign Teacher" : teachers}
+            Teacher Id: {!teachers ? "Teacher" : teachers}
           </div>
         </div>
         <div className="grid grid-cols-6 gap-2">

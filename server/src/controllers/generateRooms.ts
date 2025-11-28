@@ -2,19 +2,20 @@ import { Request, Response } from "express";
 import { TryCatch } from "../middlewares/error";
 import z, { success } from 'zod'
 import prisma from "../config/prisma";
-import { tr } from "zod/v4/locales";
 
 const CreateRoomSchema = z.object({
     exam: z.string(),
+    examDate: z.string(),
     noOfStudents: z.number(),
     roomCapacity: z.number(),
     allocatedTeacherId: z.number().optional(),
 })
 
 export const createRoom = TryCatch(async (req, res) => {
+    console.log("REQ BODY", req.body);
 
     const parsed = CreateRoomSchema.safeParse(req.body)
-
+    console.log("parsed", parsed)
 
     if (!parsed.success) {
         return res.status(400).json({
@@ -27,6 +28,7 @@ export const createRoom = TryCatch(async (req, res) => {
     const responseDb = await prisma.room.create({
         data: {
             exam: parsed.data.exam,
+            examDate: parsed.data.examDate.toString(),
             noOfStudents: parsed.data.noOfStudents,
             roomCapacity: parsed.data.roomCapacity,
             allocatedTeacher: parsed.data.allocatedTeacherId ? {
@@ -68,7 +70,6 @@ export const getTeachers = TryCatch(async (req, res) => {
             name: true
         }
     })
-    console.log(teachers)
     return res.json({
         success: true,
 

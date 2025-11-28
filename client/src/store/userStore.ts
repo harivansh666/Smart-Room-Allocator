@@ -152,6 +152,7 @@ export const useUserStore = create<UserStore>((set) => ({
 
     createRoom: async (data) => {
         try {
+            console.log(data)
             await axiosInstance.post("/rooms/createRoom", data);
             toast.success("Room Created")
 

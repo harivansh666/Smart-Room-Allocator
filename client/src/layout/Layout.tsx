@@ -62,7 +62,7 @@ const Layout = React.memo(function Layout() {
               <ul className="flex flex-col text-white font-medium gap-1 p-4">
                 {navItems.map((item) => {
                   const IconComponent = item.icon;
-                  if (item.path === "/create-room" && !isAdmin) return;
+                  if (item.path === "/createroom" && !isAdmin) return;
                   return (
                     <li key={item.path}>
                       <Link
