@@ -1,0 +1,12 @@
+node_modules
+# Builds
+dist
+build
+.temp
+
+# Logs
+*.log
+logs
+*.pid
+*.seed
+*.pid.lock

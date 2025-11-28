@@ -10,6 +10,9 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    port: 3001
+  },
   build: {
     outDir: 'dist',
     minify: 'esbuild', // safer minifier for React + TS

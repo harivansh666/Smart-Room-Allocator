@@ -1,0 +1,50 @@
+# Node
+node_modules
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# Builds
+dist
+build
+.temp
+
+# Logs
+*.log
+logs
+*.pid
+*.seed
+*.pid.lock
+
+# Environment files
+.env
+.env.*       # (like .env.local, .env.production)
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore
+
+# Editor configs
+.vscode
+.idea
+
+# Docker ignore itself
+docker-compose.yml
+Dockerfile
+
+# Prisma
+prisma/dev.db
+prisma/*.db-journal
+
+# Cache
+*.cache
+.cache
+.eslintcache
+
+# OS generated files
+*.swp
