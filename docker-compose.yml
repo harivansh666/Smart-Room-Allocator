@@ -13,6 +13,10 @@ services:
     container_name: smart-room-server
     ports:
       - "3000:3000"
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - CLIENT_API=${CLIENT_API}
     networks:
       - smart-room-net
 

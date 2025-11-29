@@ -3,7 +3,8 @@ node_modules
 dist
 build
 .temp
-
+.env.local
+.env.development.local
 # Logs
 *.log
 logs
